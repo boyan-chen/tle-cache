@@ -1,4 +1,42 @@
 {
-  "status": "not-generated-yet",
-  "message": "Run the GitHub Actions workflow once to generate TLE cache files."
+  "generatedUtc": "2026-06-29T14:58:34Z",
+  "source": "celestrak",
+  "groups": {
+    "active": {
+      "ok": true,
+      "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&FORMAT=TLE",
+      "path": "active.tle",
+      "satelliteCount": 15894,
+      "updatedUtc": "2026-06-29T14:58:38Z",
+      "elapsedSeconds": 3.078
+    },
+    "starlink": {
+      "ok": true,
+      "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=STARLINK&FORMAT=TLE",
+      "path": "starlink.tle",
+      "satelliteCount": 10669,
+      "updatedUtc": "2026-06-29T14:58:40Z",
+      "elapsedSeconds": 2.383
+    }
+  },
+  "tracked": {
+    "combined": {
+      "ok": true,
+      "path": "formosat.tle",
+      "satelliteCount": 1,
+      "updatedUtc": "2026-06-29T14:58:40Z"
+    },
+    "satellites": [
+      {
+        "ok": true,
+        "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=44343&FORMAT=TLE",
+        "path": "catalog/44343.tle",
+        "satelliteCount": 1,
+        "updatedUtc": "2026-06-29T14:58:40Z",
+        "elapsedSeconds": 0.333,
+        "name": "FORMOSAT-7-3",
+        "catnr": "44343"
+      }
+    ]
+  }
 }
