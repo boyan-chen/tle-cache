@@ -85,6 +85,16 @@ page, or any malformed text, the script keeps the previous public file.
 
 This prevents a temporary upstream response from overwriting a working TLE file.
 
+The script also reads the previous `docs/status.json` before contacting
+CelesTrak. If a catalog was updated successfully less than 2 hours ago, that
+catalog is skipped and the existing public file is kept. This prevents manual
+workflow reruns or overlapping schedules from creating unnecessary upstream
+requests.
+
+If an upstream request fails, the workflow still writes `status.json` so the
+public status page records the error. It does not retry failed CelesTrak
+requests in a loop.
+
 ## Tracking More Satellites
 
 Edit `tracked_sats.json`:

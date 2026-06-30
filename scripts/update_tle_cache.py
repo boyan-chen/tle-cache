@@ -27,6 +27,7 @@ TRACKED_SATS_FILE = ROOT / "tracked_sats.json"
 
 USER_AGENT = "SatelliteMap-TLE-Cache/1.0 (+https://github.com/)"
 REQUEST_TIMEOUT_SECONDS = 60
+MIN_SUCCESS_INTERVAL_SECONDS = 2 * 60 * 60
 
 GROUP_CATALOGS = {
     "active": "https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&FORMAT=TLE",
@@ -40,15 +41,39 @@ class TleValidationError(ValueError):
     pass
 
 
+class TleFetchError(RuntimeError):
+    pass
+
+
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+def parse_utc_iso(value: Any) -> datetime | None:
+    if not isinstance(value, str):
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
 def fetch_text(url: str) -> str:
     request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
-        charset = response.headers.get_content_charset() or "utf-8"
-        return response.read().decode(charset, errors="replace")
+    try:
+        with urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
+            status = getattr(response, "status", 200)
+            if status != 200:
+                raise TleFetchError(f"Unexpected HTTP status {status}.")
+            charset = response.headers.get_content_charset() or "utf-8"
+            return response.read().decode(charset, errors="replace")
+    except urllib.error.HTTPError as exc:
+        raise TleFetchError(f"HTTP {exc.code}: {exc.reason}") from exc
+    except urllib.error.URLError as exc:
+        raise TleFetchError(str(exc.reason)) from exc
 
 
 def normalize_tle_text(text: str) -> str:
@@ -97,8 +122,66 @@ def atomic_write(path: Path, text: str) -> None:
     os.replace(temp_path, path)
 
 
-def update_one_tle(url: str, output_path: Path) -> dict[str, Any]:
+def load_previous_status() -> dict[str, Any]:
+    status_path = DOCS_DIR / "status.json"
+    if not status_path.exists():
+        return {}
+    try:
+        with status_path.open("r", encoding="utf-8") as file:
+            data = json.load(file)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
+def should_skip_fetch(previous_result: dict[str, Any] | None, output_path: Path) -> tuple[bool, str | None]:
+    if not previous_result or not previous_result.get("ok") or not output_path.exists():
+        return False, None
+
+    updated_at = parse_utc_iso(previous_result.get("updatedUtc"))
+    if updated_at is None:
+        return False, None
+
+    elapsed_seconds = (datetime.now(timezone.utc) - updated_at).total_seconds()
+    if elapsed_seconds < MIN_SUCCESS_INTERVAL_SECONDS:
+        remaining_seconds = int(MIN_SUCCESS_INTERVAL_SECONDS - elapsed_seconds)
+        return True, f"Last successful update is still fresh; next upstream fetch allowed in {remaining_seconds} seconds."
+
+    return False, None
+
+
+def skipped_result(url: str, output_path: Path, previous_result: dict[str, Any], reason: str) -> dict[str, Any]:
+    updated_at = parse_utc_iso(previous_result.get("updatedUtc"))
+    next_allowed = None
+    if updated_at is not None:
+        next_allowed = datetime.fromtimestamp(
+            updated_at.timestamp() + MIN_SUCCESS_INTERVAL_SECONDS,
+            timezone.utc,
+        ).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+    result: dict[str, Any] = {
+        "ok": True,
+        "skipped": True,
+        "url": url,
+        "path": output_path.relative_to(DOCS_DIR).as_posix(),
+        "reason": reason,
+        "keptPreviousFile": True,
+        "updatedUtc": previous_result.get("updatedUtc"),
+        "checkedUtc": utc_now_iso(),
+    }
+    if "satelliteCount" in previous_result:
+        result["satelliteCount"] = previous_result["satelliteCount"]
+    if next_allowed:
+        result["nextAllowedFetchUtc"] = next_allowed
+    return result
+
+
+def update_one_tle(url: str, output_path: Path, previous_result: dict[str, Any] | None = None) -> dict[str, Any]:
     started = time.time()
+    skip, skip_reason = should_skip_fetch(previous_result, output_path)
+    if skip and skip_reason and previous_result:
+        return skipped_result(url, output_path, previous_result, skip_reason)
+
     try:
         raw_text = fetch_text(url)
         normalized = normalize_tle_text(raw_text)
@@ -115,7 +198,7 @@ def update_one_tle(url: str, output_path: Path) -> dict[str, Any]:
             "updatedUtc": utc_now_iso(),
             "elapsedSeconds": round(time.time() - started, 3),
         }
-    except (urllib.error.URLError, TimeoutError, TleValidationError, OSError) as exc:
+    except (TleFetchError, TimeoutError, TleValidationError, OSError) as exc:
         return {
             "ok": False,
             "url": url,
@@ -146,16 +229,21 @@ def load_tracked_sats() -> list[dict[str, str]]:
     return satellites
 
 
-def update_tracked_satellites() -> dict[str, Any]:
+def update_tracked_satellites(previous_status: dict[str, Any]) -> dict[str, Any]:
     satellites = load_tracked_sats()
     combined_parts: list[str] = []
     records: list[dict[str, Any]] = []
+    previous_satellites = {
+        str(item.get("catnr")): item
+        for item in previous_status.get("tracked", {}).get("satellites", [])
+        if isinstance(item, dict) and item.get("catnr") is not None
+    }
 
     for sat in satellites:
         catnr = sat["catnr"]
         url = f"https://celestrak.org/NORAD/elements/gp.php?CATNR={catnr}&FORMAT=TLE"
         output_path = CATALOG_DIR / f"{catnr}.tle"
-        result = update_one_tle(url, output_path)
+        result = update_one_tle(url, output_path, previous_satellites.get(catnr))
         result["name"] = sat["name"]
         result["catnr"] = catnr
         records.append(result)
@@ -230,18 +318,21 @@ def main() -> int:
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     CATALOG_DIR.mkdir(parents=True, exist_ok=True)
     atomic_write(DOCS_DIR / ".nojekyll", "")
+    previous_status = load_previous_status()
 
     status: dict[str, Any] = {
         "generatedUtc": utc_now_iso(),
         "source": "celestrak",
+        "minimumSuccessIntervalSeconds": MIN_SUCCESS_INTERVAL_SECONDS,
         "groups": {},
         "tracked": {},
     }
 
     for group_name, url in GROUP_CATALOGS.items():
-        status["groups"][group_name] = update_one_tle(url, DOCS_DIR / f"{group_name}.tle")
+        previous_group = previous_status.get("groups", {}).get(group_name, {})
+        status["groups"][group_name] = update_one_tle(url, DOCS_DIR / f"{group_name}.tle", previous_group)
 
-    status["tracked"] = update_tracked_satellites()
+    status["tracked"] = update_tracked_satellites(previous_status)
     atomic_write(DOCS_DIR / "status.json", json.dumps(status, indent=2, ensure_ascii=False) + "\n")
     write_index(status)
 
@@ -250,7 +341,13 @@ def main() -> int:
     if any_group_ok or any_tracked_ok:
         return 0
 
-    print("No TLE file was updated successfully. Existing files, if any, were kept.", file=sys.stderr)
+    any_previous_file_kept = any(group.get("keptPreviousFile") for group in status["groups"].values())
+    any_previous_file_kept = any_previous_file_kept or status["tracked"].get("combined", {}).get("keptPreviousFile", False)
+    if any_previous_file_kept:
+        print("No upstream TLE fetch succeeded. Existing public files were kept.", file=sys.stderr)
+        return 0
+
+    print("No TLE file is available and no upstream fetch succeeded.", file=sys.stderr)
     return 1
 
 
