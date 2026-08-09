@@ -1,23 +1,25 @@
 {
-  "generatedUtc": "2026-08-09T10:28:06Z",
+  "generatedUtc": "2026-08-09T12:28:56Z",
   "source": "celestrak",
   "minimumSuccessIntervalSeconds": 7200,
   "groups": {
     "active": {
-      "ok": true,
+      "ok": false,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&FORMAT=TLE",
       "path": "active.tle",
-      "satelliteCount": 16093,
-      "updatedUtc": "2026-08-09T10:28:09Z",
-      "elapsedSeconds": 3.128
+      "error": "timed out",
+      "keptPreviousFile": true,
+      "checkedUtc": "2026-08-09T12:29:56Z",
+      "elapsedSeconds": 60.158
     },
     "starlink": {
-      "ok": true,
+      "ok": false,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=STARLINK&FORMAT=TLE",
       "path": "starlink.tle",
-      "satelliteCount": 10761,
-      "updatedUtc": "2026-08-09T10:28:11Z",
-      "elapsedSeconds": 1.586
+      "error": "timed out",
+      "keptPreviousFile": true,
+      "checkedUtc": "2026-08-09T12:30:56Z",
+      "elapsedSeconds": 60.167
     }
   },
   "tracked": {
@@ -25,16 +27,17 @@
       "ok": true,
       "path": "formosat.tle",
       "satelliteCount": 1,
-      "updatedUtc": "2026-08-09T10:28:12Z"
+      "updatedUtc": "2026-08-09T12:31:56Z"
     },
     "satellites": [
       {
-        "ok": true,
+        "ok": false,
         "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=44343&FORMAT=TLE",
         "path": "catalog/44343.tle",
-        "satelliteCount": 1,
-        "updatedUtc": "2026-08-09T10:28:12Z",
-        "elapsedSeconds": 0.947,
+        "error": "timed out",
+        "keptPreviousFile": true,
+        "checkedUtc": "2026-08-09T12:31:56Z",
+        "elapsedSeconds": 60.143,
         "name": "FORMOSAT-7-3",
         "catnr": "44343"
       }
