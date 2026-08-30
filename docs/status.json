@@ -1,5 +1,5 @@
 {
-  "generatedUtc": "2026-08-30T08:29:19Z",
+  "generatedUtc": "2026-08-30T10:23:05Z",
   "source": "celestrak",
   "minimumSuccessIntervalSeconds": 7200,
   "groups": {
@@ -9,8 +9,8 @@
       "path": "active.tle",
       "error": "timed out",
       "keptPreviousFile": true,
-      "checkedUtc": "2026-08-30T08:30:19Z",
-      "elapsedSeconds": 60.082
+      "checkedUtc": "2026-08-30T10:24:05Z",
+      "elapsedSeconds": 60.232
     },
     "starlink": {
       "ok": false,
@@ -18,8 +18,8 @@
       "path": "starlink.tle",
       "error": "timed out",
       "keptPreviousFile": true,
-      "checkedUtc": "2026-08-30T08:31:19Z",
-      "elapsedSeconds": 60.062
+      "checkedUtc": "2026-08-30T10:25:05Z",
+      "elapsedSeconds": 60.236
     }
   },
   "tracked": {
@@ -27,7 +27,7 @@
       "ok": true,
       "path": "formosat.tle",
       "satelliteCount": 1,
-      "updatedUtc": "2026-08-30T08:32:19Z"
+      "updatedUtc": "2026-08-30T10:26:06Z"
     },
     "satellites": [
       {
@@ -36,8 +36,8 @@
         "path": "catalog/44343.tle",
         "error": "timed out",
         "keptPreviousFile": true,
-        "checkedUtc": "2026-08-30T08:32:19Z",
-        "elapsedSeconds": 60.179,
+        "checkedUtc": "2026-08-30T10:26:06Z",
+        "elapsedSeconds": 60.207,
         "name": "FORMOSAT-7-3",
         "catnr": "44343"
       }
