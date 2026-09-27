@@ -1,31 +1,23 @@
 {
-  "generatedUtc": "2026-09-27T08:33:15Z",
+  "generatedUtc": "2026-09-27T10:26:10Z",
   "source": "celestrak",
   "minimumSuccessIntervalSeconds": 7200,
   "groups": {
     "active": {
       "ok": true,
-      "skipped": true,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&FORMAT=TLE",
       "path": "active.tle",
-      "reason": "Last successful update is still fresh; next upstream fetch allowed in 509 seconds.",
-      "keptPreviousFile": true,
-      "updatedUtc": "2026-09-27T06:41:45Z",
-      "checkedUtc": "2026-09-27T08:33:15Z",
       "satelliteCount": 15977,
-      "nextAllowedFetchUtc": "2026-09-27T08:41:45Z"
+      "updatedUtc": "2026-09-27T10:26:14Z",
+      "elapsedSeconds": 3.952
     },
     "starlink": {
       "ok": true,
-      "skipped": true,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=STARLINK&FORMAT=TLE",
       "path": "starlink.tle",
-      "reason": "Last successful update is still fresh; next upstream fetch allowed in 512 seconds.",
-      "keptPreviousFile": true,
-      "updatedUtc": "2026-09-27T06:41:48Z",
-      "checkedUtc": "2026-09-27T08:33:15Z",
       "satelliteCount": 10685,
-      "nextAllowedFetchUtc": "2026-09-27T08:41:48Z"
+      "updatedUtc": "2026-09-27T10:26:17Z",
+      "elapsedSeconds": 2.426
     }
   },
   "tracked": {
@@ -33,20 +25,16 @@
       "ok": true,
       "path": "formosat.tle",
       "satelliteCount": 1,
-      "updatedUtc": "2026-09-27T08:33:15Z"
+      "updatedUtc": "2026-09-27T10:26:17Z"
     },
     "satellites": [
       {
         "ok": true,
-        "skipped": true,
         "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=44343&FORMAT=TLE",
         "path": "catalog/44343.tle",
-        "reason": "Last successful update is still fresh; next upstream fetch allowed in 512 seconds.",
-        "keptPreviousFile": true,
-        "updatedUtc": "2026-09-27T06:41:48Z",
-        "checkedUtc": "2026-09-27T08:33:15Z",
         "satelliteCount": 1,
-        "nextAllowedFetchUtc": "2026-09-27T08:41:48Z",
+        "updatedUtc": "2026-09-27T10:26:17Z",
+        "elapsedSeconds": 0.453,
         "name": "FORMOSAT-7-3",
         "catnr": "44343"
       }
