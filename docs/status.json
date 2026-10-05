@@ -1,31 +1,25 @@
 {
-  "generatedUtc": "2026-10-05T14:35:24Z",
+  "generatedUtc": "2026-10-05T16:33:30Z",
   "source": "celestrak",
   "minimumSuccessIntervalSeconds": 7200,
   "groups": {
     "active": {
-      "ok": true,
-      "skipped": true,
+      "ok": false,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&FORMAT=TLE",
       "path": "active.tle",
-      "reason": "Last successful update is still fresh; next upstream fetch allowed in 512 seconds.",
+      "error": "HTTP 503: Service Unavailable",
       "keptPreviousFile": true,
-      "updatedUtc": "2026-10-05T12:43:57Z",
-      "checkedUtc": "2026-10-05T14:35:24Z",
-      "satelliteCount": 15958,
-      "nextAllowedFetchUtc": "2026-10-05T14:43:57Z"
+      "checkedUtc": "2026-10-05T16:33:31Z",
+      "elapsedSeconds": 0.811
     },
     "starlink": {
-      "ok": true,
-      "skipped": true,
+      "ok": false,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=STARLINK&FORMAT=TLE",
       "path": "starlink.tle",
-      "reason": "Last successful update is still fresh; next upstream fetch allowed in 515 seconds.",
+      "error": "HTTP 503: Service Unavailable",
       "keptPreviousFile": true,
-      "updatedUtc": "2026-10-05T12:44:00Z",
-      "checkedUtc": "2026-10-05T14:35:24Z",
-      "satelliteCount": 10673,
-      "nextAllowedFetchUtc": "2026-10-05T14:44:00Z"
+      "checkedUtc": "2026-10-05T16:33:32Z",
+      "elapsedSeconds": 1.044
     }
   },
   "tracked": {
@@ -33,20 +27,17 @@
       "ok": true,
       "path": "formosat.tle",
       "satelliteCount": 1,
-      "updatedUtc": "2026-10-05T14:35:24Z"
+      "updatedUtc": "2026-10-05T16:33:32Z"
     },
     "satellites": [
       {
-        "ok": true,
-        "skipped": true,
+        "ok": false,
         "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=44343&FORMAT=TLE",
         "path": "catalog/44343.tle",
-        "reason": "Last successful update is still fresh; next upstream fetch allowed in 515 seconds.",
+        "error": "HTTP 503: Service Unavailable",
         "keptPreviousFile": true,
-        "updatedUtc": "2026-10-05T12:44:00Z",
-        "checkedUtc": "2026-10-05T14:35:24Z",
-        "satelliteCount": 1,
-        "nextAllowedFetchUtc": "2026-10-05T14:44:00Z",
+        "checkedUtc": "2026-10-05T16:33:32Z",
+        "elapsedSeconds": 0.312,
         "name": "FORMOSAT-7-3",
         "catnr": "44343"
       }
