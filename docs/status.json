@@ -1,24 +1,27 @@
 {
-  "generatedUtc": "2026-11-19T00:40:17Z",
+  "generatedUtc": "2026-11-19T02:24:40Z",
   "source": "celestrak",
   "minimumSuccessIntervalSeconds": 7200,
   "groups": {
     "active": {
-      "ok": false,
+      "ok": true,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=ACTIVE&FORMAT=TLE",
       "path": "active.tle",
-      "error": "The read operation timed out",
-      "keptPreviousFile": true,
-      "checkedUtc": "2026-11-19T00:41:17Z",
-      "elapsedSeconds": 60.213
+      "satelliteCount": 15854,
+      "updatedUtc": "2026-11-19T02:24:43Z",
+      "elapsedSeconds": 2.691
     },
     "starlink": {
       "ok": true,
+      "skipped": true,
       "url": "https://celestrak.org/NORAD/elements/gp.php?GROUP=STARLINK&FORMAT=TLE",
       "path": "starlink.tle",
-      "satelliteCount": 10603,
+      "reason": "Last successful update is still fresh; next upstream fetch allowed in 1044 seconds.",
+      "keptPreviousFile": true,
       "updatedUtc": "2026-11-19T00:42:08Z",
-      "elapsedSeconds": 51.025
+      "checkedUtc": "2026-11-19T02:24:43Z",
+      "satelliteCount": 10603,
+      "nextAllowedFetchUtc": "2026-11-19T02:42:08Z"
     }
   },
   "tracked": {
@@ -26,16 +29,20 @@
       "ok": true,
       "path": "formosat.tle",
       "satelliteCount": 1,
-      "updatedUtc": "2026-11-19T00:42:26Z"
+      "updatedUtc": "2026-11-19T02:24:43Z"
     },
     "satellites": [
       {
         "ok": true,
+        "skipped": true,
         "url": "https://celestrak.org/NORAD/elements/gp.php?CATNR=44343&FORMAT=TLE",
         "path": "catalog/44343.tle",
-        "satelliteCount": 1,
+        "reason": "Last successful update is still fresh; next upstream fetch allowed in 1062 seconds.",
+        "keptPreviousFile": true,
         "updatedUtc": "2026-11-19T00:42:26Z",
-        "elapsedSeconds": 18.015,
+        "checkedUtc": "2026-11-19T02:24:43Z",
+        "satelliteCount": 1,
+        "nextAllowedFetchUtc": "2026-11-19T02:42:26Z",
         "name": "FORMOSAT-7-3",
         "catnr": "44343"
       }
