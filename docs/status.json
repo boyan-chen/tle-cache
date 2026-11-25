@@ -1,5 +1,5 @@
 {
-  "generatedUtc": "2026-11-25T14:21:43Z",
+  "generatedUtc": "2026-11-25T16:24:52Z",
   "source": "celestrak",
   "minimumSuccessIntervalSeconds": 7200,
   "groups": {
@@ -9,8 +9,8 @@
       "path": "active.tle",
       "error": "HTTP 503: Service Unavailable",
       "keptPreviousFile": true,
-      "checkedUtc": "2026-11-25T14:21:44Z",
-      "elapsedSeconds": 0.482
+      "checkedUtc": "2026-11-25T16:24:53Z",
+      "elapsedSeconds": 0.49
     },
     "starlink": {
       "ok": false,
@@ -18,8 +18,8 @@
       "path": "starlink.tle",
       "error": "HTTP 503: Service Unavailable",
       "keptPreviousFile": true,
-      "checkedUtc": "2026-11-25T14:21:44Z",
-      "elapsedSeconds": 0.4
+      "checkedUtc": "2026-11-25T16:24:53Z",
+      "elapsedSeconds": 0.288
     }
   },
   "tracked": {
@@ -27,7 +27,7 @@
       "ok": true,
       "path": "formosat.tle",
       "satelliteCount": 1,
-      "updatedUtc": "2026-11-25T14:21:45Z"
+      "updatedUtc": "2026-11-25T16:24:53Z"
     },
     "satellites": [
       {
@@ -36,8 +36,8 @@
         "path": "catalog/44343.tle",
         "error": "HTTP 503: Service Unavailable",
         "keptPreviousFile": true,
-        "checkedUtc": "2026-11-25T14:21:45Z",
-        "elapsedSeconds": 0.282,
+        "checkedUtc": "2026-11-25T16:24:53Z",
+        "elapsedSeconds": 0.449,
         "name": "FORMOSAT-7-3",
         "catnr": "44343"
       }
